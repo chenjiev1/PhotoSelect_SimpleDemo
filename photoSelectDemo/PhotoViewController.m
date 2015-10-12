@@ -98,14 +98,15 @@
             break;
         case 2:
         {
-            if (self.savePhoto) {
-                self.savePhoto(self.selectPhoto,self.selectPhoto_H);
-            }
+            
+            [self.delegate returnPhotos:self.selectPhoto and:self.selectPhoto_H];
+            
             [self.PhotoCollection reloadData];
             [self.selectPhoto removeAllObjects];
             [self.selectPhoto_H removeAllObjects];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
+            break;
         case 3:
         {
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
@@ -178,6 +179,11 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+
 }
 
 -(void)dealloc

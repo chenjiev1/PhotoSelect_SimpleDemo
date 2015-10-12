@@ -41,38 +41,19 @@
 
 -(void)LoadingPhoto:(void (^)(PhotoViewController *pho))load
 {
-    
-    __block NSMutableArray *arr=self.photo;
-    __block NSMutableArray *arr_h=self.photo_H;
-    self.photoVC.savePhoto=^(NSArray *photo,NSArray *photo_H)
-    {
-        if (arr.count) {
-            [arr removeAllObjects];
-            [arr_h removeAllObjects];
-        }
-        if (photo.count) {
-            [arr addObjectsFromArray:photo];
-            [arr_h addObjectsFromArray:photo_H];
-        }
-    };
     if (load)
     {
         load(self.photoVC);
     }
     
 }
-/**
- *  得到所有图片数组 有2个元素 0：略缩图数组 1：高清图数组
- *
- *  @return 图片数组
- */
--(NSArray*)getSelectPhoto
-{
-    NSArray *Arr=[NSArray arrayWithObjects:self.photo,self.photo_H, nil];
-    return Arr;
-}
+
+
+
+
 -(void)dealloc
 {
+    
 }
 
 @end

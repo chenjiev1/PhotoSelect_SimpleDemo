@@ -12,7 +12,7 @@
 
 #define iden @"cell"
 
-@interface ViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>
+@interface ViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,photoSelectProtocol>
 
 @property(nonatomic,strong)NSMutableArray *pho;
 @property(nonatomic,strong)UICollectionView *PhotoCollection;
@@ -23,6 +23,7 @@
 
 @synthesize pho = _pho;
 
+
 -(NSMutableArray *)pho
 {
     if (!_pho) {
@@ -31,20 +32,6 @@
     return _pho;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-
-    if (self.pho)
-    {
-        [self.pho removeAllObjects];
-        [self.pho setArray:[[PhotoSelectTools sharedPhotoPhotoSelect] getSelectPhoto]];
-        if (self.pho.count)
-        {
-           [self.PhotoCollection reloadData];
-        }
-    }
-
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -78,7 +65,7 @@
     }
     else
     {
-        return [self.pho[0] count];
+        return self.pho.count;
     }
 }
 
@@ -86,19 +73,34 @@
 {
     PhotoCollectionViewCell *cell=(PhotoCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:iden forIndexPath:indexPath];
 
-    [cell setUI:[[self.pho objectAtIndex:0] objectAtIndex:indexPath.row]];
+    [cell setUI:[self.pho objectAtIndex:indexPath.row]];
     return cell;
 }
 
 -(void)logingPhoto
 {
     NSLog(@"进入");
-    
+    //跳入图片选择
     [[PhotoSelectTools sharedPhotoPhotoSelect] LoadingPhoto:^(PhotoViewController *pho) {
         [self presentViewController:pho animated:YES completion:nil];
+        pho.delegate=self;
     }];
 }
-
+/**
+ *  协议代理方法 返回取得的图片
+ *
+ */
+-(void)returnPhotos:(NSArray *)Photos and:(NSArray *)Photos_H
+{
+    if (self.pho) {
+        [self.pho removeAllObjects];
+        [_pho setArray:Photos];
+    }
+    if (self.pho.count)
+    {
+        [self.PhotoCollection reloadData];
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

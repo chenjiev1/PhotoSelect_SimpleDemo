@@ -20,8 +20,6 @@
  */
 -(void)LoadingPhoto:(void(^)(PhotoViewController *pho))load;
 
-//返回所选图片
--(NSArray *)getSelectPhoto;
 
 
 @end
